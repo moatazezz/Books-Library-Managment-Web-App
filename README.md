@@ -17,7 +17,7 @@ Application have dashboard for displaying Percentage of:
 Application have Auto notification for number of books exceeding allowed period
 together with a report include borrower Name , borrow date and penalty
 
-Application provide search by book title in available books list and present
+Application provides search by book title in available books list that shows
 number of available copies.
 
 Prerequistes:
