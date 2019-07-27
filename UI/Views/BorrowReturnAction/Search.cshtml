@@ -1,0 +1,111 @@
+﻿@model IEnumerable<BLL.VM.BooksVM>
+
+@{
+    ViewBag.Title = "Search";
+
+    List<SelectListItem> Books =
+        LibraryApp.Controllers.BorrowReturnActionController.GetBooks().Select(a =>
+  new SelectListItem
+  {
+      Value = a.id.ToString(),
+      Text = a.title
+  }).ToList();
+}
+@using (Html.BeginForm("Search", "BorrowReturnAction", FormMethod.Get))
+{
+
+<div class="form-horizontal">
+    <h2>Search available books</h2>
+    <br />
+    
+    Book Title :
+    @Html.DropDownList("searchid",Books,"select" )
+    <input name="submit" value="Search" type="submit" />
+</div>
+}
+<table class="table">
+    <tr>
+        <th>
+            Title
+        </th>
+        <th>
+            Auther
+        </th>
+        <th>
+            Original Copies Number
+        </th>
+        <th> Available Copies</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr class="item">
+            <td>
+                @Html.DisplayFor(modelItem => item.title)
+                @Html.HiddenFor(modelItem => item.id, new { htmlAttributes = new { }, @id = "bookid" })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.auther)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CopiesNumber, new { htmlAttributes = new { }, @id = "AvailableCopies" })
+            </td>
+            <td>
+                <div id="AvailableCopies">k</div>
+            </td>
+            <td>
+                @*@Html.ActionLink("Borrow Book", "Create", new { id = item.id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.id })*@
+            </td>
+        </tr>
+    }
+
+</table>
+
+<script>
+
+
+    $(document).ready(function () {
+
+        $('.table > tbody  > tr.item').each(function () {
+            var bookid = $(this).find("#bookid").val();
+            var copies = "";
+
+            $.ajax({
+                url: '/BorrowReturnAction/GetAvailableCopies',
+                type: 'GET',
+                data: { BookId: bookid },
+                async: false,
+                cache: false,
+                timeout: 30000,
+                error: function () {
+                    return true;
+                },
+                success: function (response) {
+                    copies = response.AvailableCopies;
+
+                    //alert(response.AvailableCopies);
+
+                }
+            });
+
+            $(this).find("#AvailableCopies").html(copies);
+
+        });
+        //$("#search").click(function () {
+        //    var book = $("#searchid").val();
+        //    //$.get('/BorrowReturnAction/search', { BookId: book })
+        //    //    .done(function (response) {
+
+        //    //    });
+
+        //            });
+
+
+
+
+    });
+
+</script>

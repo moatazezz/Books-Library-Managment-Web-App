@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>DashBoard</h2>
+<div class="m-widget14">
+    <div class="m-widget14__header">
+        <h3 class="m-widget14__title">
+            Book Share
+        </h3>
+        <span class="m-widget14__desc">
+          Borrowed Books Share 
+        </span>
+    </div>
+    <div class="row  align-items-center">
+        <div class="col">
+            <div id="m_chart_profit_share" class="m-widget14__chart" style="height: 160px">
+                <div class="m-widget14__stat">
+                    
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="m-widget14__legends">
+                <div class="m-widget14__legend">
+                    <span class="m-widget14__legend-bullet m--bg-accent"></span>
+                    <span class="m-widget14__legend-text" id="Available">
+                        0% % Available Books
+                    </span>
+                </div>
+                <div class="m-widget14__legend">
+                    <span class="m-widget14__legend-bullet m--bg-warning"></span>
+                    <span class="m-widget14__legend-text" id="BorrowedNotExceeding">
+                        47% Borrowed Books Not Exceeding Allowed Period
+                    </span>
+                </div>
+                <div class="m-widget14__legend">
+                    <span class="m-widget14__legend-bullet m--bg-brand"></span>
+                    <span class="m-widget14__legend-text" id="BorrowedExceeding">
+                        19% Borrowed Books Exceeding Allowed Period
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    
+    $(document).ready(function () {
+        $.get('/DashBoard/GetStatisitcs')
+            .done(function (response) {
+
+                $("#Available").html(response.Available + "% Available Books");
+                $("#BorrowedNotExceeding").html(response.BorrowedNotExceeding + "% Borrowed Books Not Exceeding Allowed Period");
+                $("#BorrowedExceeding").html(response.BorrowedExceeding + "% Borrowed Books Exceeding Allowed Period");
+
+            })
+
+    });
+</script>

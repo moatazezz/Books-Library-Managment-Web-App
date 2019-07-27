@@ -1,0 +1,63 @@
+﻿@model IEnumerable<BLL.VM.BooksVM>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="form-horizontal">
+
+    <h2>Books</h2>
+
+    <br>
+    <br>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+</div>
+    <table class="table">
+        <tr>
+            <th>
+                Title
+            </th>
+            <th>
+                Auther
+            </th>
+            <th>
+                Category
+            </th>
+            <th>
+                Borrow Type
+            </th>
+            <th>
+                Allowed Borrow Period
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.auther)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BorrowType.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BorrowType.AllowedBorrowPeriod) Days
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.id }) 
+                    @*@Html.ActionLink("Details", "Details", new { id = item.id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.id })*@
+                </td>
+            </tr>
+        }
+
+    </table>

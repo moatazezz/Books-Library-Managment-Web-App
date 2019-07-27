@@ -1,0 +1,90 @@
+﻿@model BLL.VM.BorrowReturnActionVM
+
+@{
+    ViewBag.Title = "Create";
+    List<SelectListItem> Borrowers =
+           LibraryApp.Controllers.BorrowReturnActionController.GetBorrowers().Select(a =>
+     new SelectListItem
+     {
+         Value = a.id.ToString(),
+         Text = a.Name
+     }).ToList();
+
+    List<SelectListItem> Books =
+        LibraryApp.Controllers.BorrowReturnActionController.GetAvailableBooks().Select(a =>
+  new SelectListItem
+  {
+      Value = a.id.ToString(),
+      Text = a.title
+  }).ToList();
+}
+
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <h2>Create Book Borrow Action</h2>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Book.title, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.BookId, Books, "Select", new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BookId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Borrower", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.BorrowerId, Borrowers, "Select", new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BorrowerId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BorrowDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BorrowDate, new { htmlAttributes = new { @class = "form-control datepicker", @id= "BorrowDate" } })
+                @Html.ValidationMessageFor(model => model.BorrowDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.ReturnDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ReturnDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ReturnDate, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div class="col-xl-4">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+    <script>
+        $(document).ready(function () {
+
+            $('#BorrowDate').datepicker().datepicker('setDate', 'today');
+
+        });
+
+
+</script>
+
+@*@section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }*@
